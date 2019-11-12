@@ -1,14 +1,15 @@
 lazy val commonSettings = Seq(
   organization := "com.whisk",
-  version := "0.9.9",
-  scalaVersion := "2.13.0",
-  crossScalaVersions := Seq("2.13.0", "2.12.8", "2.11.12"),
+  version := "0.9.10",
+  scalaVersion := "2.11.8",
+  crossScalaVersions := Seq("2.13.0", "2.12.8", "2.11.12", "2.11.8"),
   scalacOptions ++= Seq("-feature", "-deprecation"),
   fork in Test := true,
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
   sonatypeProfileName := "com.whisk",
   publishMavenStyle := true,
   publishTo := Some(Opts.resolver.sonatypeStaging),
+/*
   pomExtra in Global := {
     <url>https://github.com/whisklabs/docker-it-scala</url>
       <scm>
@@ -29,6 +30,7 @@ lazy val commonSettings = Seq(
         </developer>
       </developers>
   }
+*/
 )
 
 lazy val root =
@@ -36,7 +38,8 @@ lazy val root =
     .in(file("."))
     .settings(commonSettings: _*)
     .settings(publish := {}, publishLocal := {}, packagedArtifacts := Map.empty)
-    .aggregate(core, testkitSpotifyImpl, testkitSpotifyShadedImpl, testkitDockerJavaImpl, config, scalatest, specs2, samples)
+    .aggregate(core, testkitSpotifyImpl, testkitDockerJavaImpl, config, scalatest, specs2, samples)
+//    .aggregate(core, testkitSpotifyImpl, testkitSpotifyShadedImpl, testkitDockerJavaImpl, config, scalatest, specs2, samples)
 
 lazy val core =
   project
@@ -52,18 +55,6 @@ lazy val testkitSpotifyImpl =
               libraryDependencies ++=
                 Seq("com.spotify" % "docker-client" % "8.11.5",
                     "com.google.code.findbugs" % "jsr305" % "3.0.1"))
-    .dependsOn(core)
-
-lazy val testkitSpotifyShadedImpl =
-  project
-    .in(file("impl/spotify"))
-    .settings(commonSettings: _*)
-    .settings(name := "docker-testkit-impl-spotify-shaded",
-              libraryDependencies ++=
-                Seq("com.spotify" % "docker-client" % "8.11.5" classifier "shaded",
-                    "com.google.code.findbugs" % "jsr305" % "3.0.1"),
-              target := baseDirectory.value / "target-shaded"
-              )
     .dependsOn(core)
 
 lazy val testkitDockerJavaImpl =
