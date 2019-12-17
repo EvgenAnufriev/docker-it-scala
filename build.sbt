@@ -1,14 +1,19 @@
+import sbt.Keys.publishConfiguration
+
 lazy val commonSettings = Seq(
   organization := "com.whisk",
   version := "0.9.10",
   scalaVersion := "2.11.8",
-  crossScalaVersions := Seq("2.13.0", "2.12.8", "2.11.12", "2.11.8"),
+//  crossScalaVersions := Seq("2.13.0", "2.12.8", "2.11.12", "2.11.8"),
   scalacOptions ++= Seq("-feature", "-deprecation"),
   fork in Test := true,
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
   sonatypeProfileName := "com.whisk",
   publishMavenStyle := true,
   publishTo := Some(Opts.resolver.sonatypeStaging),
+  publishM2Configuration := publishM2Configuration.value.withOverwrite(true),
+  publishConfiguration := publishConfiguration.value.withOverwrite(true),
+  publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
 /*
   pomExtra in Global := {
     <url>https://github.com/whisklabs/docker-it-scala</url>
@@ -111,3 +116,4 @@ lazy val config =
         )
     )
     .dependsOn(core, testkitDockerJavaImpl)
+
